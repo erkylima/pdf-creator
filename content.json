@@ -4,30 +4,36 @@
       "theme": "dark",
       "tag": "O FUTURO DO TRABALHO",
       "photo_position": "bottom-right",
-      "scale":1.5,
+      "scale":2,
       "title": "A IA já sabe programar.",
       "content": "Se a sua única habilidade é escrever código rápido, você está competindo com a máquina. E ela não dorme.\n\n(Deslize para ver as carreiras que a IA não substitui) →"
     },
     {
       "theme": "light",
+      "tag": "O QUE PERMANECE IGUAL",
+      "title": "Profundidade Técnica.",
+      "content": "Engenheiros com profundidade técnica ainda são essenciais. Mas não é mais suficiente. O mercado quer impacto, não apenas código."
+    },
+{
+      "theme": "gold",
       "tag": "A MUDANÇA DE JOGO",
       "title": "O fim do engenheiro isolado.",
-      "content": "A era do desenvolvedor trancado em uma sala escura resolvendo tickets do Jira acabou. O mercado secou para a 'tecnologia pela tecnologia'. Hoje, a demanda é por impacto."
+      "content": "A era do desenvolvedor trancado em uma sala escura resolvendo tickets do Jira acabou. O mercado não quer 'tecnologia pela tecnologia'. Hoje, a demanda é por impacto."
     },
     {
-      "theme": "gold",
+      "theme": "dark",
       "tag": "CARREIRA EM DESTAQUE #1",
       "title": "Forward Deployed Engineer (FDE)",
       "content": "É o engenheiro de linha de frente. O profissional técnico que senta na mesa com o cliente, sente a dor do negócio na pele e coda a solução olhando no olho do problema."
     },
     {
-      "theme": "dark",
+      "theme": "light",
       "tag": "CARREIRA EM DESTAQUE #2",
       "title": "Tech Customer Success",
       "content": "Profissionais que unem profundidade técnica com escuta ativa profunda. Eles não apenas apagam incêndios, mas transformam bugs e falhas em dados para evoluir o produto."
     },
     {
-      "theme": "light",
+      "theme": "dark",
       "tag": "O NOVO PARADIGMA",
       "title": "O Feedback Loop Evolutivo",
       "content": "Essas novas carreiras têm algo em comum: elas não param no 'Feedback Reativo' dos dashboards. Elas aplicam o 'Feedback Pró-ativo' sentando para tomar um café com o cliente."
@@ -35,9 +41,9 @@
     {
       "theme": "gold",
       "photo_position": "bottom-left",
-      "tag": "VISÃO SÊNIOR",
+      "tag": "VISÃO DE FUTURO",
       "flip": true,
-      "scale":1.2,
+      "scale":2,
       "title": "Deixe a máquina com a sintaxe.",
       "content": "Seu verdadeiro diferencial competitivo agora é a empatia, a visão de negócio e a conexão humana. O que você está fazendo hoje para sair da bolha de código?\n\n💾 Salve este post para lembrar da sua rota."
     }

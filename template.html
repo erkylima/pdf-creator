@@ -65,12 +65,14 @@
         limitamos a caixa de texto a 65% da tela. 
         Assim a fonte grande tem espaço para quebrar as linhas de forma natural e elegante. */
         .slide.has-photo-right .content-wrapper {
-            max-width: 65%; 
+            max-width: 58%;
+            padding-right: 20px;
         }
         
         .slide.has-photo-left .content-wrapper {
-            max-width: 65%;
-            margin-left: auto; /* Empurra o texto graciosamente para a direita */
+            max-width: 58%;
+            margin-left: auto;
+            padding-left: 20px;
         }
 
         .tag {
@@ -141,7 +143,7 @@
             bottom: 0;
             z-index: 1;
             height: 78%;
-            width: 44%;
+            width: 46%;
             display: flex;
             align-items: flex-end;
             justify-content: center;
@@ -150,12 +152,12 @@
         }
         
         .photo-wrapper.photo-bottom-right {
-            right: 0;
+            right: -250px;
             left: auto;
         }
         
         .photo-wrapper.photo-bottom-left {
-            left: 0;
+            left: -250px;
             right: auto;
         }
 
