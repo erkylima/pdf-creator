@@ -1,0 +1,57 @@
+{
+  "slides": [
+    {
+      "theme": "gold",
+      "photo_position": "bottom-right",
+      "scale": 10,
+      "tag": "INOVAÇÃO",
+      "title": "O ZÍPER E A INOVAÇÃO",
+      "content": "A solução que todo mundo precisa, mas ninguém pediu."
+    },
+    {
+      "theme": "dark",
+      "tag": "COMPORTAMENTO",
+      "title": "O Paradigma do Usuário",
+      "content": "Se você perguntasse para alguém no século XIX se ela queria um zíper, a resposta seria um olhar confuso. Ninguém pediu aquilo."
+    },
+    {
+      "theme": "light",
+      "tag": "VISÃO CRÍTICA",
+      "title": "O Limite do Reativo",
+      "content": "Se dependêssemos apenas do que o usuário diz que quer, estaríamos apenas criando botões melhores e mais rápidos.\n\nO usuário nem sempre sabe descrever a dor que sente."
+    },
+    {
+      "theme": "gold",
+      "tag": "A ESSÊNCIA",
+      "title": "\"O feedback loop pró-ativo não é nenhuma novidade moderna.\"",
+      "content": "A humanidade faz isso desde os tempos mais antigos."
+    },
+    {
+      "theme": "dark",
+      "tag": "EVOLUÇÃO",
+      "title": "A Raiz Ancestral",
+      "content": "Olhar para o passado, identificar padrões de falhas, antecipar necessidades e criar mecanismos para facilitar a vida é o que nos trouxe até aqui."
+    },
+    {
+      "theme": "light",
+      "tag": "TECNOLOGIA",
+      "title": "Os Novos Superpoderes",
+      "content": "A grande diferença é que hoje temos ferramentas avançadas. Unimos essa sensibilidade humana com inteligência de dados e interoperabilidade."
+    },
+    {
+      "theme": "gold",
+      "tag": "O FRAMEWORK",
+      "title": "Feedback Loop Evolutivo",
+      "content": "É a fusão entre a leitura inteligente do passado, a escuta pró-ativa das dores reais e a tecnologia integrada para projetar um futuro melhor."
+    },
+    {
+      "theme": "dark",
+      "photo_position": "bottom-left",
+      "scale": 5.5,
+      "flip": true,
+      "tag": "AÇÃO",
+      "title": "Construa o Zíper",
+      "content": "Não espere o cliente pedir a solução óbvia. Vá a campo, entenda o processo e crie o impacto real.\n\nNa sua empresa, qual é o 'zíper' que ninguém pediu, mas que resolveria tudo?"
+    }
+  ]
+}

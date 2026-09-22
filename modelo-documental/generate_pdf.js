@@ -47,10 +47,13 @@ async function generateCarousel() {
         
         const currentPage = index + 1;
         const currentLogoBase64 = theme === 'dark' ? logoLightBase64 : logoDarkBase64;
-        
-        const logoHtml = currentLogoBase64 
-            ? `<img src="${currentLogoBase64}" class="logo-placeholder" alt="Logo Érky" />` 
-            : `<div style="color: red; font-size: 20px;">[Logo]</div>`;
+        const shouldHideLogo = Boolean(slide.hidden_logo);
+
+        const logoHtml = shouldHideLogo
+            ? '<div class="logo-placeholder hidden-logo" aria-hidden="true"></div>'
+            : (currentLogoBase64
+                ? `<img src="${currentLogoBase64}" class="logo-placeholder" alt="Logo Érky" />`
+                : `<div style="color: red; font-size: 20px;">[Logo]</div>`);
 
         slidesHtml += `
         <div class="slide ${layoutClasses}">

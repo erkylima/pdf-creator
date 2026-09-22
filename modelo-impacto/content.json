@@ -2,50 +2,56 @@
   "slides": [
     {
       "theme": "dark",
-      "tag": "O FUTURO DO TRABALHO",
       "photo_position": "bottom-right",
-      "scale": 4.5,
-      "title": "A IA já sabe programar.",
-      "content": "Se a sua única habilidade é escrever código rápido, você está competindo com a máquina. E ela não dorme.\n\n(Deslize para ver as carreiras que a IA não substitui) →"
+      "scale": 15,
+      "tag": "O CUSTO INVISÍVEL",
+      "title": "O buraco de US$ 2,41 Trilhões.",
+      "content": "Sabe qual é o preço daquele \"código provisório\" que a sua equipe subiu para produção há 5 anos e nunca arrumou?"
     },
     {
       "theme": "light",
-      "tag": "O QUE PERMANECE IGUAL",
-      "title": "Profundidade Técnica.",
-      "content": "Engenheiros com profundidade técnica ainda são essenciais. Mas não é mais suficiente. O mercado quer impacto, não apenas código."
+      "tag": "DADOS DE MERCADO",
+      "title": "A conta chegou.",
+      "content": "US$ 2,41 trilhões por ano. Esse é o custo do débito técnico e da má qualidade de software apenas nos Estados Unidos (segundo o CISQ)."
     },
     {
       "theme": "gold",
-      "tag": "A MUDANÇA DE JOGO",
-      "title": "O fim do engenheiro isolado.",
-      "content": "A era do desenvolvedor trancado em uma sala escura resolvendo tickets do Jira acabou. O mercado não quer 'tecnologia pela tecnologia'. Hoje, a demanda é por impacto."
+      "tag": "A PROMESSA",
+      "title": "A miragem da IA.",
+      "content": "Aí chegou a IA com a promessa mágica de que os LLMs iriam varrer o código legado, refatorar tudo em segundos e zerar a dívida."
     },
     {
       "theme": "dark",
-      "tag": "CARREIRA EM DESTAQUE #1",
-      "title": "Forward Deployed Engineer (FDE)",
-      "content": "É o engenheiro de linha de frente. O profissional técnico que senta na mesa com o cliente, sente a dor do negócio na pele e coda a solução olhando no olho do problema."
+      "tag": "ALERTA DO GARTNER",
+      "title": "\"A IA pode multiplicar a dívida.\"",
+      "content": "O Gartner jogou um balde de água fria: o uso de ferramentas de IA para desenvolvimento, se feito sem governança, não vai pagar o débito técnico. Vai piorá-lo."
     },
     {
       "theme": "light",
-      "tag": "CARREIRA EM DESTAQUE #2",
-      "title": "Tech Customer Success",
-      "content": "Profissionais que unem profundidade técnica com escuta ativa profunda. Eles não apenas apagam incêndios, mas transformam bugs e falhas em dados para evoluir o produto."
-    },
-    {
-      "theme": "dark",
-      "tag": "O NOVO PARADIGMA",
-      "title": "O Feedback Loop Evolutivo",
-      "content": "Essas novas carreiras têm algo em comum: elas não param no 'Feedback Reativo' dos dashboards. Elas aplicam o 'Feedback Pró-ativo' sentando para tomar um café com o cliente."
+      "tag": "O PONTO CEGO",
+      "title": "A máquina não tem contexto.",
+      "content": "Ela cospe código na velocidade da luz, mas não sabe qual módulo obsoleto é o que realmente resolve a dor do seu usuário."
     },
     {
       "theme": "gold",
-      "photo_position": "bottom-left",
+      "tag": "GOVERNANÇA",
+      "title": "A Linha de Frente",
+      "content": "É o humano — o Forward Deployed Engineer — quem define a direção. É você quem entende a dor real e aponta para a IA o que deve ser reescrito primeiro."
+    },
+    {
+      "theme": "dark",
       "tag": "VISÃO DE FUTURO",
+      "title": "O Débito Humano",
+      "content": "Se o débito técnico em software custa trilhões, já imaginou o tamanho do débito que acumulamos com a natureza e com a nossa sociedade?"
+    },
+    {
+      "theme": "light",
+      "photo_position": "bottom-left",
       "flip": true,
-      "scale": 4.5,
-      "title": "Deixe a máquina com a sintaxe.",
-      "content": "Seu verdadeiro diferencial competitivo agora é a empatia, a visão de negócio e a conexão humana. O que você está fazendo hoje para sair da bolha de código?\n\n💾 Salve este post para lembrar da sua rota."
+      "scale": 5.5,
+      "tag": "AÇÃO",
+      "title": "A tecnologia está na mesa.",
+      "content": "O futuro nos convida a usar essa eficiência não só no código, mas para zerar desigualdades no mundo físico.\n\nEstamos usando-a para o que realmente importa?"
     }
   ]
 }
