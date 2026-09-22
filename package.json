@@ -1,0 +1,12 @@
+{
+  "name": "linkedin-pdf-skill",
+  "version": "1.0.0",
+  "description": "Gerador de Carrossel PDF para LinkedIn",
+  "main": "generate_pdf.js",
+  "scripts": {
+    "start": "node generate_pdf.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  }
+}

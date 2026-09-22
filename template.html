@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700;800&display=swap');
+
+        :root {
+            --midnight-slate: #22293e;
+            --golden-harvest: #f0ba3e;
+            --slate-blue: #343f5f;
+            --deep-charcoal: #10131d;
+            --creamy-gold: #f4cb6d;
+            --rich-amber: #e9a812;
+            --white: #ffffff;
+            --gray-light: #f5f7fa;
+        }
+
+        @page { size: 1080px 1350px; margin: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .slide {
+            width: 1080px;
+            height: 1350px;
+            page-break-after: always;
+            padding: 100px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Gradientes Elegantes */
+        .theme-dark { 
+            background: linear-gradient(135deg, var(--deep-charcoal) 0%, var(--midnight-slate) 100%); 
+            color: var(--white); 
+        }
+        .theme-light { 
+            background: linear-gradient(135deg, #ffffff 0%, #eaeff5 100%); 
+            color: var(--midnight-slate); 
+        }
+        .theme-gold { 
+            background: linear-gradient(135deg, var(--creamy-gold) 0%, var(--rich-amber) 100%); 
+            color: var(--deep-charcoal); 
+        }
+
+        /* Estrutura de Conteúdo */
+        .content-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 2;
+            position: relative;
+            width: 100%;
+        }
+        
+        /* === CORREÇÃO DO ENQUADRAMENTO DO TEXTO === 
+        Em vez de um padding gigante que esmaga o texto, 
+        limitamos a caixa de texto a 65% da tela. 
+        Assim a fonte grande tem espaço para quebrar as linhas de forma natural e elegante. */
+        .slide.has-photo-right .content-wrapper {
+            max-width: 65%; 
+        }
+        
+        .slide.has-photo-left .content-wrapper {
+            max-width: 65%;
+            margin-left: auto; /* Empurra o texto graciosamente para a direita */
+        }
+
+        .tag {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+        }
+        
+        .theme-dark .tag { color: var(--golden-harvest); }
+        .theme-light .tag { color: var(--slate-blue); }
+        .theme-gold .tag { color: var(--midnight-slate); }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 88px;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 48px;
+        }
+
+        p {
+            font-size: 42px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .theme-dark p { color: rgba(255,255,255,0.85); }
+        .theme-light p { color: var(--slate-blue); }
+        .theme-gold p { color: var(--deep-charcoal); }
+
+        /* Rodapé Elegante */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 40px;
+            border-top: 2px solid;
+            margin-top: 60px;
+            z-index: 3;
+            position: relative;
+            width: 100%;
+        }
+
+        .theme-dark .footer { border-color: rgba(255,255,255,0.1); }
+        .theme-light .footer { border-color: rgba(34, 41, 62, 0.1); }
+        .theme-gold .footer { border-color: rgba(16, 19, 29, 0.1); }
+
+        .logo-placeholder {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .page-indicator {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+        
+        /* === ARQUITETURA DE FOTO E SCALING === */
+        .photo-wrapper {
+            position: absolute;
+            bottom: 0;
+            z-index: 1;
+            height: 78%;
+            width: 44%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            pointer-events: none;
+            overflow: visible;
+        }
+        
+        .photo-wrapper.photo-bottom-right {
+            right: 0;
+            left: auto;
+        }
+        
+        .photo-wrapper.photo-bottom-left {
+            left: 0;
+            right: auto;
+        }
+
+        .personal-photo {
+            height: 100%;
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
+            object-position: bottom center;
+            opacity: 1;
+            display: block;
+        }
+
+        .flip-horizontal {
+            transform: scaleX(-1);
+        }
+        
+        .photo-shadow {
+            filter: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="slides-container">
+        <!-- O JS irá injetar os slides aqui -->
+    </div>
+</body>
+</html>
