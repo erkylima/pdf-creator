@@ -3,8 +3,8 @@ import { PdfConfig } from '../types';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 export class PdfGenerator {
-  static async generate(config: PdfConfig, photoFile?: File | null): Promise<void> {
-    const blob = await this.request(config, photoFile);
+  static async generate(config: PdfConfig, photoFiles: Array<File | null>): Promise<void> {
+    const blob = await this.request(config, photoFiles);
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -17,10 +17,10 @@ export class PdfGenerator {
 
   static async preview(
     config: PdfConfig,
-    photoFile?: File | null,
+    photoFiles: Array<File | null>,
     signal?: AbortSignal,
   ): Promise<string[]> {
-    const formData = this.createFormData(config, photoFile);
+    const formData = this.createFormData(config, photoFiles);
     const response = await fetch(`${API_URL}/api/pdf/preview`, {
       method: 'POST',
       body: formData,
@@ -47,12 +47,12 @@ export class PdfGenerator {
 
   private static async request(
     config: PdfConfig,
-    photoFile?: File | null,
+    photoFiles: Array<File | null>,
     signal?: AbortSignal,
   ): Promise<Blob> {
     const response = await fetch(`${API_URL}/api/pdf/generate`, {
       method: 'POST',
-      body: this.createFormData(config, photoFile),
+      body: this.createFormData(config, photoFiles),
       signal,
     });
 
@@ -63,15 +63,17 @@ export class PdfGenerator {
     return response.blob();
   }
 
-  private static createFormData(config: PdfConfig, photoFile?: File | null): FormData {
+  private static createFormData(config: PdfConfig, photoFiles: Array<File | null>): FormData {
     const formData = new FormData();
     formData.append('config', JSON.stringify({
       model: config.model,
       content: config.content,
     }));
-    if (photoFile) {
-      formData.append('photo', photoFile);
-    }
+    photoFiles.forEach((photo, index) => {
+      if (photo) {
+        formData.append(`photo${index + 1}`, photo);
+      }
+    });
     return formData;
   }
 }

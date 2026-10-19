@@ -2,16 +2,26 @@ export type PdfModel = 'impacto' | 'documental';
 
 export type Theme = 'dark' | 'light' | 'gold';
 
-export type PhotoPosition = 'bottom-right' | 'bottom-left' | undefined;
+export type PhotoPosition = 'bottom-right' | 'bottom-left' | 'center' | undefined;
+
+export type PhotoId = 1 | 2 | 3;
+
+export interface ContentCard {
+  title: string;
+  content?: string;
+}
 
 export interface Slide {
   theme?: Theme;
   photo_position?: PhotoPosition;
+  photo_id?: PhotoId;
   photo_flip?: boolean;
   scale?: number;
   tag?: string;
   title: string;
   content?: string;
+  cards_enabled?: boolean;
+  cards?: ContentCard[];
   hidden_logo?: boolean;
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { PdfModel, Slide, PdfConfig } from './types';
+import { PdfModel, Slide, PdfConfig, Theme, PhotoPosition, PhotoId } from './types';
 import SlideEditor from './components/SlideEditor';
 import { PdfGenerator } from './components/PdfGenerator';
 import PdfPreview from './components/PdfPreview';
@@ -15,13 +15,109 @@ const initialContent = {
   slides: [{ ...defaultSlide, title: 'Seu Título Aqui' }],
 };
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isTheme(value: unknown): value is Theme | 'centered' {
+  return value === 'dark' || value === 'light' || value === 'gold' || value === 'centered';
+}
+
+function isPhotoPosition(value: unknown): value is PhotoPosition {
+  return value === 'bottom-left' || value === 'bottom-right' || value === 'center';
+}
+
+function isPdfModel(value: unknown): value is PdfModel {
+  return value === 'impacto' || value === 'documental';
+}
+
+function isPhotoId(value: unknown): value is PhotoId {
+  return value === 1 || value === 2 || value === 3;
+}
+
+function parseSlidesJson(value: unknown): { slides: Slide[]; model?: PdfModel } {
+  if (!isRecord(value)) {
+    throw new Error('O arquivo deve conter um objeto JSON.');
+  }
+
+  const content = isRecord(value.content) ? value.content : null;
+  const slidesValue = content ? content.slides : value.slides;
+  if (!Array.isArray(slidesValue) || slidesValue.length === 0) {
+    throw new Error('O JSON deve conter um array "slides" não vazio.');
+  }
+
+  const slides = slidesValue.map((slide, index): Slide => {
+    if (!isRecord(slide) || typeof slide.title !== 'string') {
+      throw new Error(`O slide ${index + 1} deve ser um objeto com título em texto.`);
+    }
+    if (slide.theme !== undefined && !isTheme(slide.theme)) {
+      throw new Error(`O tema do slide ${index + 1} não é válido.`);
+    }
+    if (slide.photo_position !== undefined && !isPhotoPosition(slide.photo_position)) {
+      throw new Error(`A posição da foto no slide ${index + 1} não é válida.`);
+    }
+    if (
+      (slide.tag !== undefined && typeof slide.tag !== 'string') ||
+      (slide.content !== undefined && typeof slide.content !== 'string') ||
+      (slide.cards_enabled !== undefined && typeof slide.cards_enabled !== 'boolean') ||
+      (slide.photo_flip !== undefined && typeof slide.photo_flip !== 'boolean') ||
+      (slide.hidden_logo !== undefined && typeof slide.hidden_logo !== 'boolean') ||
+      (slide.scale !== undefined && typeof slide.scale !== 'number')
+    ) {
+      throw new Error(`Os campos do slide ${index + 1} têm valores inválidos.`);
+    }
+    if (slide.photo_id !== undefined && !isPhotoId(slide.photo_id)) {
+      throw new Error(`A foto selecionada no slide ${index + 1} não é válida.`);
+    }
+
+    let cards: Slide['cards'];
+    if (slide.cards !== undefined) {
+      if (!Array.isArray(slide.cards)) {
+        throw new Error(`Os cards do slide ${index + 1} têm formato inválido.`);
+      }
+      cards = slide.cards.map((card, cardIndex) => {
+        if (
+          !isRecord(card) ||
+          typeof card.title !== 'string' ||
+          (card.content !== undefined && typeof card.content !== 'string')
+        ) {
+          throw new Error(`O card ${cardIndex + 1} do slide ${index + 1} tem formato inválido.`);
+        }
+        return { title: card.title, content: card.content };
+      });
+    }
+
+    return {
+      theme: slide.theme === 'centered' ? 'dark' : slide.theme,
+      photo_position: slide.photo_position,
+      photo_id: slide.photo_id,
+      photo_flip: slide.photo_flip,
+      scale: slide.scale,
+      tag: slide.tag,
+      title: slide.title,
+      content: slide.content,
+      cards_enabled: slide.cards_enabled ?? (
+        slide.theme === 'centered' || (Array.isArray(slide.cards) && slide.cards.length > 0)
+      ),
+      cards,
+      hidden_logo: slide.hidden_logo,
+    };
+  });
+
+  if (value.model !== undefined && !isPdfModel(value.model)) {
+    throw new Error('O modelo da configuração exportada não é válido.');
+  }
+
+  return { slides, model: value.model };
+}
+
 function App() {
   const [model, setModel] = useState<PdfModel>('impacto');
   const [slides, setSlides] = useState<Slide[]>(initialContent.slides);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoFiles, setPhotoFiles] = useState<Array<File | null>>([null, null, null]);
   const [previewPages, setPreviewPages] = useState<string[]>([]);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const [previewError, setPreviewError] = useState<string | null>(null);
@@ -60,7 +156,7 @@ function App() {
     const timeoutId = window.setTimeout(async () => {
       try {
         const config: PdfConfig = { model, content: { slides } };
-        const pages = await PdfGenerator.preview(config, photoFile, controller.signal);
+        const pages = await PdfGenerator.preview(config, photoFiles, controller.signal);
         if (controller.signal.aborted) {
           return;
         }
@@ -82,13 +178,13 @@ function App() {
       window.clearTimeout(timeoutId);
       controller.abort();
     };
-  }, [model, slides, photoFile, showPreview]);
+  }, [model, slides, photoFiles, showPreview]);
 
   const handleGenerate = async () => {
     setIsGenerating(true);
     try {
       const config: PdfConfig = { model, content: { slides } };
-      await PdfGenerator.generate(config, photoFile);
+      await PdfGenerator.generate(config, photoFiles);
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Erro ao gerar PDF. Verifique o console.');
@@ -103,23 +199,26 @@ function App() {
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
-          const json = JSON.parse(e.target?.result as string);
-          if (json.slides && Array.isArray(json.slides)) {
-            setSlides(json.slides);
-            setCurrentSlideIndex(0);
-          } else {
-            alert('JSON inválido. Deve conter um array "slides".');
+          const parsed = parseSlidesJson(JSON.parse(String(e.target?.result)));
+          setSlides(parsed.slides);
+          if (parsed.model) {
+            setModel(parsed.model);
           }
+          setCurrentSlideIndex(0);
         } catch (error) {
-          alert('Erro ao ler JSON. Verifique o formato.');
+          const message = error instanceof Error ? error.message : 'Erro desconhecido.';
+          alert(`Não foi possível carregar o JSON: ${message}`);
         }
+      };
+      reader.onerror = () => {
+        alert('Não foi possível ler o arquivo JSON.');
       };
       reader.readAsText(file);
     }
   };
 
   const handleExportJson = () => {
-    const config: PdfConfig = { model, content: { slides } };
+    const config = { model, slides };
     const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -131,11 +230,26 @@ function App() {
     document.body.removeChild(a);
   };
 
-  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setPhotoFile(file);
+      setPhotoFiles((current) => current.map((photo, photoIndex) => (
+        photoIndex === index ? file : photo
+      )));
     }
+  };
+
+  const removePhoto = (index: number) => {
+    const input = document.getElementById(`photo-upload-${index + 1}`);
+    if (input instanceof HTMLInputElement) {
+      input.value = '';
+    }
+    setPhotoFiles((current) => current.map((photo, photoIndex) => (
+      photoIndex === index ? null : photo
+    )));
+    setSlides((current) => current.map((slide) => (
+      slide.photo_id === index + 1 ? { ...slide, photo_id: undefined } : slide
+    )));
   };
 
   const nextSlide = () => {
@@ -170,22 +284,38 @@ function App() {
                     <option value="documental">Documental (1080x1350px)</option>
                   </select>
                 </div>
-                <div className="form-group">
-                  <label>Foto pessoal:</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoUpload}
-                    style={{ display: 'none' }}
-                    id="photo-upload"
-                  />
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => document.getElementById('photo-upload')?.click()}
-                  >
-                    {photoFile ? 'Trocar Foto' : 'Carregar Foto'}
-                  </button>
-                  {photoFile && <span className="photo-status">✓ Foto carregada</span>}
+                <div className="form-group photo-upload-group">
+                  <label>Fotos (até 3):</label>
+                  {photoFiles.map((photo, index) => (
+                    <div className="photo-upload-slot" key={index}>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(event) => handlePhotoUpload(index, event)}
+                        style={{ display: 'none' }}
+                        id={`photo-upload-${index + 1}`}
+                      />
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        type="button"
+                        onClick={() => document.getElementById(`photo-upload-${index + 1}`)?.click()}
+                      >
+                        {photo ? `Trocar foto ${index + 1}` : `Carregar foto ${index + 1}`}
+                      </button>
+                      {photo && (
+                        <>
+                          <span className="photo-status">{photo.name}</span>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            type="button"
+                            onClick={() => removePhoto(index)}
+                          >
+                            Remover
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className="form-row">
@@ -230,6 +360,7 @@ function App() {
                     key={index}
                     slide={slide}
                     index={index}
+                    photoFiles={photoFiles}
                     onUpdate={(s) => updateSlide(index, s)}
                     onRemove={() => removeSlide(index)}
                     canRemove={slides.length > 1}

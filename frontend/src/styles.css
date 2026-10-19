@@ -181,6 +181,25 @@ body {
   min-height: 100px;
 }
 
+.content-card-editor {
+  padding: 1rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.content-card-editor > .form-group {
+  margin-bottom: 0.75rem;
+}
+
+.content-card-editor > .btn {
+  margin-bottom: 0.75rem;
+}
+
+.content-card-editor > .btn:last-child {
+  margin-bottom: 0;
+}
+
 .checkbox-group {
   flex-direction: row;
   align-items: center;
@@ -329,6 +348,23 @@ body {
   font-size: 0.85rem;
   color: #28a745;
   font-weight: 600;
+}
+
+.photo-upload-group {
+  gap: 0.75rem;
+}
+
+.photo-upload-slot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.photo-upload-slot .photo-status {
+  flex: 1;
+  min-width: 120px;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 1200px) {

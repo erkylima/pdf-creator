@@ -56,20 +56,26 @@ export class PuppeteerPdfGenerator implements PdfGeneratorPort {
 
     const logoDarkBase64 = this.getBase64Image('logo-dark.png');
     const logoLightBase64 = this.getBase64Image('logo-light.png');
-    const personalPhotoBase64 = config.photo || this.getBase64Image('minha-foto.png');
+    const uploadedPhotos = config.photos || [config.photo || null];
 
     let slidesHtml = '';
     const totalSlides = content.slides.length;
 
     content.slides.forEach((slide, index) => {
-      const theme = slide.theme || 'dark';
+      const theme = slide.theme === 'light' || slide.theme === 'gold' ? slide.theme : 'dark';
       let layoutClasses = `theme-${theme}`;
       let photoHtml = '';
+      const personalPhotoBase64 = slide.photo_id
+        ? uploadedPhotos[slide.photo_id - 1] || this.getBase64Image('minha-foto.png')
+        : uploadedPhotos.find((photo): photo is string => Boolean(photo))
+          || this.getBase64Image('minha-foto.png');
 
       if (slide.photo_position && personalPhotoBase64) {
-        const isRight = slide.photo_position.includes('right');
+        const isRight = slide.photo_position === 'bottom-right';
+        const isLeft = slide.photo_position === 'bottom-left';
         const positionClass = `photo-${slide.photo_position}`;
-        layoutClasses += isRight ? ' has-photo-right' : ' has-photo-left';
+        if (isRight) layoutClasses += ' has-photo-right';
+        if (isLeft) layoutClasses += ' has-photo-left';
 
         const scaleFactor = Number(slide.scale) || 1;
         const computedWidth = Math.min(70, Math.max(38, 42 + (scaleFactor - 1) * 8));
@@ -90,16 +96,43 @@ export class PuppeteerPdfGenerator implements PdfGeneratorPort {
         : (currentLogoBase64
           ? `<img src="${currentLogoBase64}" class="logo-placeholder" alt="Logo" />`
           : '<div style="color: red; font-size: 20px;">[Logo]</div>');
+      const tagHtml = slide.tag ? `<div class="tag">${this.escapeHtml(slide.tag)}</div>` : '';
+      const titleHtml = `<h1>${this.escapeHtml(slide.title)}</h1>`;
+      const contentHtml = slide.content
+        ? `<p>${this.escapeHtml(slide.content).replace(/\n/g, '<br>')}</p>`
+        : '';
+      const cardsHtml = (slide.cards || []).length > 0
+        ? `<div class="content-cards">${slide.cards!.map((card) => `
+              <div class="content-subcard">
+                  <strong>${this.escapeHtml(card.title)}</strong>
+                  ${card.content ? `<span>${this.escapeHtml(card.content)}</span>` : ''}
+              </div>
+          `).join('')}</div>`
+        : '';
+      const regularContentHtml = `
+          <div class="content-wrapper">
+              ${tagHtml}
+              ${titleHtml}
+              ${contentHtml}
+          </div>`;
+      const structuredContentHtml = `
+          <div class="content-wrapper structured-layout${slide.cards_enabled ? ' has-content-cards' : ''}">
+              <div class="slide-heading">
+                  ${tagHtml}
+                  ${titleHtml}
+              </div>
+              ${slide.cards_enabled
+                ? `<div class="slide-content-card">${contentHtml}${cardsHtml}</div>`
+                : (contentHtml ? `<div class="structured-slide-copy">${contentHtml}</div>` : '')}
+          </div>`;
+      const contentMarkup = slide.cards_enabled || slide.photo_position === 'center'
+        ? structuredContentHtml
+        : regularContentHtml;
 
       slidesHtml += `
-      <div class="slide ${layoutClasses}">
+      <div class="slide ${layoutClasses}${slide.cards_enabled ? ' has-content-cards' : ''}${slide.photo_position === 'center' ? ' has-centered-photo' : ''}">
           ${photoHtml}
-
-          <div class="content-wrapper">
-              ${slide.tag ? `<div class="tag">${slide.tag}</div>` : ''}
-              <h1>${slide.title}</h1>
-              ${slide.content ? `<p>${slide.content.replace(/\n/g, '<br>')}</p>` : ''}
-          </div>
+          ${contentMarkup}
 
           <div class="footer">
               ${logoHtml}
@@ -130,5 +163,14 @@ export class PuppeteerPdfGenerator implements PdfGeneratorPort {
       console.warn(`⚠️ Aviso: Não consegui carregar o arquivo ${fileName}.`);
       return '';
     }
+  }
+
+  private escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 }

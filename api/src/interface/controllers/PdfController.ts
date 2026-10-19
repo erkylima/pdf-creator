@@ -36,7 +36,7 @@ export class PdfController {
 
   private getConfig(req: Request, res: Response): PdfConfig | null {
     const configStr = req.body.config;
-    const photoFile = req.file;
+    const photoFiles = req.files as Record<string, Express.Multer.File[]> | undefined;
 
     if (!configStr) {
       res.status(400).json({ error: 'Missing config' });
@@ -49,10 +49,20 @@ export class PdfController {
       return null;
     }
 
-    const photoBase64 = photoFile
-      ? `data:${photoFile.mimetype};base64,${photoFile.buffer.toString('base64')}`
-      : null;
+    const photos = ['photo1', 'photo2', 'photo3'].map((field, index) => {
+      const photoFile = photoFiles?.[field]?.[0];
+      if (photoFile) {
+        return `data:${photoFile.mimetype};base64,${photoFile.buffer.toString('base64')}`;
+      }
+      if (index === 0) {
+        const legacyPhoto = photoFiles?.photo?.[0];
+        if (legacyPhoto) {
+          return `data:${legacyPhoto.mimetype};base64,${legacyPhoto.buffer.toString('base64')}`;
+        }
+      }
+      return null;
+    });
 
-    return { ...config, photo: photoBase64 };
+    return { ...config, photos, photo: photos[0] };
   }
 }

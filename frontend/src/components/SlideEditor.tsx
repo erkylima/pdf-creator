@@ -1,15 +1,23 @@
 import React from 'react';
-import { Slide, Theme, PhotoPosition } from '../types';
+import { Slide, Theme, PhotoPosition, PhotoId } from '../types';
 
 interface SlideEditorProps {
   slide: Slide;
   index: number;
+  photoFiles: Array<File | null>;
   onUpdate: (slide: Slide) => void;
   onRemove: () => void;
   canRemove: boolean;
 }
 
-export default function SlideEditor({ slide, index, onUpdate, onRemove, canRemove }: SlideEditorProps) {
+export default function SlideEditor({
+  slide,
+  index,
+  photoFiles,
+  onUpdate,
+  onRemove,
+  canRemove,
+}: SlideEditorProps) {
   const handleChange = (field: keyof Slide, value: any) => {
     onUpdate({ ...slide, [field]: value });
   };
@@ -45,6 +53,7 @@ export default function SlideEditor({ slide, index, onUpdate, onRemove, canRemov
             onChange={(e) => handleChange('photo_position', e.target.value as PhotoPosition || undefined)}
           >
             <option value="">Sem foto</option>
+            <option value="center">Centralizada</option>
             <option value="bottom-right">Inferior Direita</option>
             <option value="bottom-left">Inferior Esquerda</option>
           </select>
@@ -53,6 +62,24 @@ export default function SlideEditor({ slide, index, onUpdate, onRemove, canRemov
 
       {slide.photo_position && (
         <div className="form-row">
+          <div className="form-group">
+            <label htmlFor={`slide-${index}-photo`}>Foto neste slide:</label>
+            <select
+              id={`slide-${index}-photo`}
+              value={slide.photo_id || ''}
+              onChange={(e) => handleChange(
+                'photo_id',
+                e.target.value ? Number(e.target.value) as PhotoId : undefined,
+              )}
+            >
+              <option value="">Automática (primeira carregada ou padrão)</option>
+              {photoFiles.map((photo, photoIndex) => photo && (
+                <option key={photoIndex} value={photoIndex + 1}>
+                  Foto {photoIndex + 1}: {photo.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="form-group">
             <label>Escala (1-20):</label>
             <input
@@ -107,6 +134,75 @@ export default function SlideEditor({ slide, index, onUpdate, onRemove, canRemov
           rows={4}
         />
       </div>
+
+      <div className="form-group checkbox-group">
+        <label>
+          <input
+            type="checkbox"
+            checked={slide.cards_enabled || false}
+            onChange={(e) => handleChange('cards_enabled', e.target.checked)}
+          />
+          Exibir conteúdo em card
+        </label>
+      </div>
+
+      {slide.cards_enabled && (
+        <div className="form-group content-cards-editor">
+          <label>Cards dentro do card de conteúdo:</label>
+          {(slide.cards || []).map((card, cardIndex) => (
+            <div className="content-card-editor" key={cardIndex}>
+              <div className="form-group">
+                <label htmlFor={`slide-${index}-card-${cardIndex}-title`}>Título do card:</label>
+                <input
+                  id={`slide-${index}-card-${cardIndex}-title`}
+                  type="text"
+                  value={card.title}
+                  onChange={(e) => {
+                    const cards = [...(slide.cards || [])];
+                    cards[cardIndex] = { ...card, title: e.target.value };
+                    onUpdate({ ...slide, cards });
+                  }}
+                  placeholder="Ex: 75 horas"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor={`slide-${index}-card-${cardIndex}-content`}>Detalhe:</label>
+                <input
+                  id={`slide-${index}-card-${cardIndex}-content`}
+                  type="text"
+                  value={card.content || ''}
+                  onChange={(e) => {
+                    const cards = [...(slide.cards || [])];
+                    cards[cardIndex] = { ...card, content: e.target.value };
+                    onUpdate({ ...slide, cards });
+                  }}
+                  placeholder="Ex: acesso vitalício"
+                />
+              </div>
+              <button
+                className="btn btn-danger btn-sm"
+                type="button"
+                onClick={() => onUpdate({
+                  ...slide,
+                  cards: (slide.cards || []).filter((_, i) => i !== cardIndex),
+                })}
+              >
+                Remover card
+              </button>
+            </div>
+          ))}
+          <button
+            className="btn btn-secondary"
+            type="button"
+            onClick={() => onUpdate({
+              ...slide,
+              cards: [...(slide.cards || []), { title: '', content: '' }],
+            })}
+          >
+            + Adicionar card interno
+          </button>
+        </div>
+      )}
 
       <div className="form-group checkbox-group">
         <label>
