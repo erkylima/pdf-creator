@@ -2,6 +2,7 @@
   "slides": [
     {
       "theme": "dark",
+      "background": "gold-arcs",
       "photo_position": "bottom-right",
       "scale": 15,
       "tag": "O CUSTO INVISÍVEL",
@@ -10,12 +11,31 @@
     },
     {
       "theme": "light",
+      "cards_enabled": true,
       "tag": "DADOS DE MERCADO",
       "title": "A conta chegou.",
-      "content": "US$ 2,41 trilhões por ano. Esse é o custo do débito técnico e da má qualidade de software apenas nos Estados Unidos (segundo o CISQ)."
+      "content": "US$ 2,41 trilhões por ano. Esse é o custo do débito técnico e da má qualidade de software apenas nos Estados Unidos (segundo o CISQ).",
+      "cards": [
+        {
+          "title": "US$ 2,41 tri",
+          "content": "custo anual estimado",
+          "theme": "gold"
+        },
+        {
+          "title": "Estados Unidos",
+          "content": "recorte do estudo",
+          "theme": "dark"
+        },
+        {
+          "title": "CISQ",
+          "content": "fonte dos dados",
+          "theme": "light"
+        }
+      ]
     },
     {
       "theme": "gold",
+      "background": "blue-glow",
       "tag": "A PROMESSA",
       "title": "A miragem da IA.",
       "content": "Aí chegou a IA com a promessa mágica de que os LLMs iriam varrer o código legado, refatorar tudo em segundos e zerar a dívida."
@@ -34,9 +54,27 @@
     },
     {
       "theme": "gold",
+      "cards_enabled": true,
       "tag": "GOVERNANÇA",
       "title": "A Linha de Frente",
-      "content": "É o humano — o Forward Deployed Engineer — quem define a direção. É você quem entende a dor real e aponta para a IA o que deve ser reescrito primeiro."
+      "content": "É o humano — o Forward Deployed Engineer — quem define a direção. É você quem entende a dor real e aponta para a IA o que deve ser reescrito primeiro.",
+      "cards": [
+        {
+          "title": "Entender",
+          "content": "a dor real do usuário",
+          "theme": "light"
+        },
+        {
+          "title": "Priorizar",
+          "content": "o que deve ser reescrito",
+          "theme": "gold"
+        },
+        {
+          "title": "Direcionar",
+          "content": "a IA com contexto",
+          "theme": "dark"
+        }
+      ]
     },
     {
       "theme": "dark",
@@ -47,8 +85,9 @@
     {
       "theme": "light",
       "photo_position": "bottom-left",
-      "flip": true,
+      "photo_flip": true,
       "scale": 5.5,
+      "background": "edge-specks",
       "tag": "AÇÃO",
       "title": "A tecnologia está na mesa.",
       "content": "O futuro nos convida a usar essa eficiência não só no código, mas para zerar desigualdades no mundo físico.\n\nEstamos usando-a para o que realmente importa?"

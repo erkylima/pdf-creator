@@ -126,14 +126,19 @@ export class PuppeteerPdfGenerator implements PdfGeneratorPort {
               ${titleHtml}
               ${contentHtml}
           </div>`;
+      const noPhotoCardsContent = `
+              ${contentHtml ? `<div class="structured-slide-copy">${contentHtml}</div>` : ''}
+              ${cardsHtml ? `<div class="slide-content-card">${cardsHtml}</div>` : ''}`;
       const structuredContentHtml = `
-          <div class="content-wrapper structured-layout${slide.cards_enabled ? ' has-content-cards' : ''}">
+          <div class="content-wrapper structured-layout${slide.cards_enabled ? ' has-content-cards' : ''}${slide.cards_enabled && !photoHtml ? ' no-photo-content' : ''}">
               <div class="slide-heading">
                   ${tagHtml}
                   ${titleHtml}
               </div>
               ${slide.cards_enabled
-                ? `<div class="slide-content-card">${contentHtml}${cardsHtml}</div>`
+                ? (photoHtml
+                  ? `<div class="slide-content-card">${contentHtml}${cardsHtml}</div>`
+                  : noPhotoCardsContent)
                 : (contentHtml ? `<div class="structured-slide-copy">${contentHtml}</div>` : '')}
           </div>`;
       const contentMarkup = slide.cards_enabled || slide.photo_position === 'center'

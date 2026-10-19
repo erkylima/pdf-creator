@@ -88,7 +88,7 @@ O frontend está configurado como micro-frontend usando Vite:
 
 1. Acesse http://localhost:3000
 2. Selecione o modelo (Impacto ou Documental)
-3. Edite os slides com o editor visual e escolha um dos três temas (dark, light ou gold). Em cada slide, escolha uma das até três fotos carregadas, ajuste sua escala e selecione seu próprio background (overlay transparente, imagem personalizada ou nenhum). A imagem personalizada é carregada uma vez na configuração geral e pode ser aplicada individualmente aos slides desejados. Cada card interno pode ter seu próprio tema; no layout com foto centralizada são organizados até três cards por linha, e a última linha expande os cards para preencher o espaço disponível.
+3. Edite os slides com o editor visual e escolha um dos três temas (dark, light ou gold). Em cada slide, escolha uma das até três fotos carregadas, ajuste sua escala e selecione seu próprio background (overlay transparente, imagem personalizada ou nenhum). A imagem personalizada é carregada uma vez na configuração geral e pode ser aplicada individualmente aos slides desejados. Cada card interno pode ter seu próprio tema; no layout com foto centralizada são organizados até três cards por linha, e a última linha expande os cards para preencher o espaço disponível. Sem foto, o texto do conteúdo fica fora do card principal e somente os cards internos permanecem nele.
 4. Opcionalmente, carregue uma imagem de background personalizada na configuração geral; selecione em cada slide se deseja usá-la.
 5. Acompanhe o preview, atualizado automaticamente com a mesma renderização do PDF
 6. Clique em "Gerar PDF"

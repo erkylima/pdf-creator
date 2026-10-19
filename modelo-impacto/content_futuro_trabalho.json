@@ -2,6 +2,7 @@
   "slides": [
     {
       "theme": "dark",
+      "background": "gold-arcs",
       "tag": "O FUTURO DO TRABALHO",
       "photo_position": "bottom-right",
       "scale": 4.5,
@@ -34,16 +35,35 @@
     },
     {
       "theme": "dark",
+      "cards_enabled": true,
       "tag": "O NOVO PARADIGMA",
       "title": "O Feedback Loop Evolutivo",
-      "content": "Essas novas carreiras têm algo em comum: elas não param no 'Feedback Reativo' dos dashboards. Elas aplicam o 'Feedback Pró-ativo' sentando para tomar um café com o cliente."
+      "content": "Essas novas carreiras têm algo em comum: elas não param no 'Feedback Reativo' dos dashboards. Elas aplicam o 'Feedback Pró-ativo' sentando para tomar um café com o cliente.",
+      "cards": [
+        {
+          "title": "Observar dados",
+          "content": "feedback reativo",
+          "theme": "dark"
+        },
+        {
+          "title": "Ouvir pessoas",
+          "content": "feedback pró-ativo",
+          "theme": "light"
+        },
+        {
+          "title": "Evoluir",
+          "content": "produto com contexto",
+          "theme": "gold"
+        }
+      ]
     },
     {
       "theme": "gold",
       "photo_position": "bottom-left",
       "tag": "VISÃO DE FUTURO",
-      "flip": true,
+      "photo_flip": true,
       "scale": 4.5,
+      "background": "edge-specks",
       "title": "Deixe a máquina com a sintaxe.",
       "content": "Seu verdadeiro diferencial competitivo agora é a empatia, a visão de negócio e a conexão humana. O que você está fazendo hoje para sair da bolha de código?\n\n💾 Salve este post para lembrar da sua rota."
     }

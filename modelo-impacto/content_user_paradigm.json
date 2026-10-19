@@ -2,6 +2,7 @@
   "slides": [
     {
       "theme": "gold",
+      "background": "gold-arcs",
       "photo_position": "bottom-right",
       "scale": 10,
       "tag": "INOVAÇÃO",
@@ -40,15 +41,34 @@
     },
     {
       "theme": "gold",
+      "cards_enabled": true,
       "tag": "O FRAMEWORK",
       "title": "Feedback Loop Evolutivo",
-      "content": "É a fusão entre a leitura inteligente do passado, a escuta pró-ativa das dores reais e a tecnologia integrada para projetar um futuro melhor."
+      "content": "É a fusão entre a leitura inteligente do passado, a escuta pró-ativa das dores reais e a tecnologia integrada para projetar um futuro melhor.",
+      "cards": [
+        {
+          "title": "Passado",
+          "content": "leitura inteligente",
+          "theme": "dark"
+        },
+        {
+          "title": "Presente",
+          "content": "escuta pró-ativa",
+          "theme": "light"
+        },
+        {
+          "title": "Futuro",
+          "content": "tecnologia integrada",
+          "theme": "gold"
+        }
+      ]
     },
     {
       "theme": "dark",
       "photo_position": "bottom-left",
       "scale": 5.5,
-      "flip": true,
+      "photo_flip": true,
+      "background": "edge-specks",
       "tag": "AÇÃO",
       "title": "Construa o Zíper",
       "content": "Não espere o cliente pedir a solução óbvia. Vá a campo, entenda o processo e crie o impacto real.\n\nNa sua empresa, qual é o 'zíper' que ninguém pediu, mas que resolveria tudo?"
