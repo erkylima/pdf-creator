@@ -57,9 +57,6 @@ export class PuppeteerPdfGenerator implements PdfGeneratorPort {
     const logoDarkBase64 = this.getBase64Image('logo-dark.png');
     const logoLightBase64 = this.getBase64Image('logo-light.png');
     const uploadedPhotos = config.photos || [config.photo || null];
-    const backgroundHtml = config.background
-      ? `<div class="slide-background" aria-hidden="true"><img src="${this.escapeHtml(config.background)}" alt="" /></div>`
-      : '';
 
     let slidesHtml = '';
     const totalSlides = content.slides.length;
@@ -68,6 +65,14 @@ export class PuppeteerPdfGenerator implements PdfGeneratorPort {
       const theme = slide.theme === 'light' || slide.theme === 'gold' ? slide.theme : 'dark';
       let layoutClasses = `theme-${theme}`;
       let photoHtml = '';
+      const slideBackground = slide.background === 'custom'
+        ? config.background
+        : slide.background && slide.background !== 'none'
+          ? config.backgrounds?.[slide.background]
+          : null;
+      const backgroundHtml = slideBackground
+        ? `<div class="slide-background" aria-hidden="true"><img src="${this.escapeHtml(slideBackground)}" alt="" /></div>`
+        : '';
       const personalPhotoBase64 = slide.photo_id
         ? uploadedPhotos[slide.photo_id - 1] || this.getBase64Image('minha-foto.png')
         : uploadedPhotos.find((photo): photo is string => Boolean(photo))
@@ -80,14 +85,14 @@ export class PuppeteerPdfGenerator implements PdfGeneratorPort {
         if (isRight) layoutClasses += ' has-photo-right';
         if (isLeft) layoutClasses += ' has-photo-left';
 
-        const scaleFactor = Number(slide.scale) || 1;
-        const computedWidth = Math.min(70, Math.max(38, 42 + (scaleFactor - 1) * 8));
-        const widthStyle = slide.scale ? `style="width: ${computedWidth}%;"` : '';
+        const scaleFactor = Math.min(20, Math.max(1, Number(slide.scale) || 1));
+        const imageScale = 1 + (scaleFactor - 1) * 0.1;
+        const imageStyle = `style="--photo-scale: ${imageScale};"`;
         const flipClass = slide.photo_flip ? ' flip-horizontal' : '';
 
         photoHtml = `
-        <div class="photo-wrapper ${positionClass}" ${widthStyle}>
-            <img src="${personalPhotoBase64}" class="personal-photo photo-shadow${flipClass}" alt="Foto Pessoal" />
+        <div class="photo-wrapper ${positionClass}">
+            <img src="${personalPhotoBase64}" class="personal-photo photo-shadow${flipClass}" ${imageStyle} alt="Foto Pessoal" />
         </div>`;
       }
 
@@ -105,12 +110,15 @@ export class PuppeteerPdfGenerator implements PdfGeneratorPort {
         ? `<p>${this.escapeHtml(slide.content).replace(/\n/g, '<br>')}</p>`
         : '';
       const cardsHtml = (slide.cards || []).length > 0
-        ? `<div class="content-cards">${slide.cards!.map((card) => `
-              <div class="content-subcard">
+        ? `<div class="content-cards">${slide.cards!.map((card) => {
+          const cardTheme = card.theme === 'light' || card.theme === 'gold' ? card.theme : card.theme === 'dark' ? 'dark' : theme;
+          return `
+              <div class="content-subcard${card.theme ? ` subcard-theme-${cardTheme}` : ''}">
                   <strong>${this.escapeHtml(card.title)}</strong>
                   ${card.content ? `<span>${this.escapeHtml(card.content)}</span>` : ''}
               </div>
-          `).join('')}</div>`
+          `;
+        }).join('')}</div>`
         : '';
       const regularContentHtml = `
           <div class="content-wrapper">

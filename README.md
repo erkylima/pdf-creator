@@ -88,13 +88,13 @@ O frontend está configurado como micro-frontend usando Vite:
 
 1. Acesse http://localhost:3000
 2. Selecione o modelo (Impacto ou Documental)
-3. Edite os slides com o editor visual e escolha um dos três temas (dark, light ou gold). Em cada slide, escolha uma das até três fotos carregadas e habilite o card de conteúdo independentemente do tema.
-4. Opcionalmente, selecione um overlay transparente incluído (arcos dourados, brilho azul ou partículas nas bordas) ou envie uma imagem de background (aplicada a todos os slides). Os overlays mantêm o tema visível por baixo e o conteúdo à frente para preservar a leitura.
+3. Edite os slides com o editor visual e escolha um dos três temas (dark, light ou gold). Em cada slide, escolha uma das até três fotos carregadas, ajuste sua escala e selecione seu próprio background (overlay transparente, imagem personalizada ou nenhum). A imagem personalizada é carregada uma vez na configuração geral e pode ser aplicada individualmente aos slides desejados. Cada card interno pode ter seu próprio tema; no layout com foto centralizada são organizados até três cards por linha, e a última linha expande os cards para preencher o espaço disponível.
+4. Opcionalmente, carregue uma imagem de background personalizada na configuração geral; selecione em cada slide se deseja usá-la.
 5. Acompanhe o preview, atualizado automaticamente com a mesma renderização do PDF
 6. Clique em "Gerar PDF"
 7. O PDF será baixado automaticamente
 
-Os overlays incluídos são PNGs transparentes de **1080x1350 px**, mesma resolução dos slides. Backgrounds enviados pelo usuário são ajustados para cobrir a página.
+Os overlays incluídos são PNGs transparentes de **1080x1350 px**, mesma resolução dos slides. Backgrounds enviados pelo usuário são ajustados para cobrir a página e só aparecem nos slides que selecionarem a opção personalizada.
 
 O JSON exportado contém `model` e `slides` na raiz. O carregador também aceita arquivos antigos no formato `{ "slides": [...] }` e configurações com os slides em `content.slides`. Fotos e backgrounds são enviados separadamente; ao importar um JSON que usa `photo_id`, carregue novamente as imagens nos slots correspondentes.
 

@@ -10,6 +10,9 @@ export function createPdfRoutes(pdfController: PdfController, upload: Multer): R
     { name: 'photo3', maxCount: 1 },
     { name: 'photo', maxCount: 1 },
     { name: 'background', maxCount: 1 },
+    { name: 'background-gold-arcs', maxCount: 1 },
+    { name: 'background-blue-glow', maxCount: 1 },
+    { name: 'background-edge-specks', maxCount: 1 },
   ]);
 
   router.post('/generate', uploadPhotos, (req, res) => pdfController.generate(req, res));

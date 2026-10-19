@@ -1,6 +1,14 @@
-import { PdfConfig } from '../types';
+import { PdfConfig, SlideBackground } from '../types';
+import backgroundGoldArcsUrl from '../assets/background-gold-arcs.png';
+import backgroundBlueGlowUrl from '../assets/background-blue-glow.png';
+import backgroundEdgeSpecksUrl from '../assets/background-edge-specks.png';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const backgroundAssetUrls: Record<Exclude<SlideBackground, 'none' | 'custom'>, string> = {
+  'gold-arcs': backgroundGoldArcsUrl,
+  'blue-glow': backgroundBlueGlowUrl,
+  'edge-specks': backgroundEdgeSpecksUrl,
+};
 
 export class PdfGenerator {
   static async generate(
@@ -25,7 +33,7 @@ export class PdfGenerator {
     signal?: AbortSignal,
     backgroundFile: File | null = null,
   ): Promise<string[]> {
-    const formData = this.createFormData(config, photoFiles, backgroundFile);
+    const formData = await this.createFormData(config, photoFiles, backgroundFile);
     const response = await fetch(`${API_URL}/api/pdf/preview`, {
       method: 'POST',
       body: formData,
@@ -58,7 +66,7 @@ export class PdfGenerator {
   ): Promise<Blob> {
     const response = await fetch(`${API_URL}/api/pdf/generate`, {
       method: 'POST',
-      body: this.createFormData(config, photoFiles, backgroundFile),
+      body: await this.createFormData(config, photoFiles, backgroundFile),
       signal,
     });
 
@@ -69,11 +77,11 @@ export class PdfGenerator {
     return response.blob();
   }
 
-  private static createFormData(
+  private static async createFormData(
     config: PdfConfig,
     photoFiles: Array<File | null>,
     backgroundFile: File | null,
-  ): FormData {
+  ): Promise<FormData> {
     const formData = new FormData();
     formData.append('config', JSON.stringify({
       model: config.model,
@@ -87,6 +95,23 @@ export class PdfGenerator {
     if (backgroundFile) {
       formData.append('background', backgroundFile);
     }
+
+    const selectedBackgrounds = new Set(
+      config.content.slides
+        .map((slide) => slide.background)
+        .filter((background): background is keyof typeof backgroundAssetUrls => (
+          background !== undefined && background in backgroundAssetUrls
+        )),
+    );
+    await Promise.all([...selectedBackgrounds].map(async (background) => {
+      const response = await fetch(backgroundAssetUrls[background]);
+      if (!response.ok) {
+        throw new Error(`Failed to load ${background} background (${response.status})`);
+      }
+      const blob = await response.blob();
+      formData.append(`background-${background}`, blob, `${background}.png`);
+    }));
+
     return formData;
   }
 }

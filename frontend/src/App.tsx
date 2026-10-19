@@ -1,35 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { PdfModel, Slide, PdfConfig, Theme, PhotoPosition, PhotoId } from './types';
+import { PdfModel, Slide, PdfConfig, Theme, PhotoPosition, PhotoId, SlideBackground } from './types';
 import SlideEditor from './components/SlideEditor';
 import { PdfGenerator } from './components/PdfGenerator';
 import PdfPreview from './components/PdfPreview';
-import backgroundGoldArcsUrl from './assets/background-gold-arcs.png';
-import backgroundBlueGlowUrl from './assets/background-blue-glow.png';
-import backgroundEdgeSpecksUrl from './assets/background-edge-specks.png';
 import './styles.css';
-
-type BackgroundMode = 'none' | 'gold-arcs' | 'blue-glow' | 'edge-specks' | 'custom';
-
-const backgroundTextureOptions: Record<
-  Exclude<BackgroundMode, 'none' | 'custom'>,
-  { url: string; filename: string }
-> = {
-  'gold-arcs': {
-    url: backgroundGoldArcsUrl,
-    filename: 'textura-arcos-dourados.png',
-  },
-  'blue-glow': {
-    url: backgroundBlueGlowUrl,
-    filename: 'textura-brilho-azul.png',
-  },
-  'edge-specks': {
-    url: backgroundEdgeSpecksUrl,
-    filename: 'textura-particulas-nas-bordas.png',
-  },
-};
 
 const defaultSlide: Slide = {
   theme: 'dark',
+  background: 'none',
   title: '',
   content: '',
 };
@@ -48,6 +26,11 @@ function isTheme(value: unknown): value is Theme | 'centered' {
 
 function isPhotoPosition(value: unknown): value is PhotoPosition {
   return value === 'bottom-left' || value === 'bottom-right' || value === 'center';
+}
+
+function isSlideBackground(value: unknown): value is SlideBackground {
+  return value === 'none' || value === 'gold-arcs' || value === 'blue-glow' ||
+    value === 'edge-specks' || value === 'custom';
 }
 
 function isPdfModel(value: unknown): value is PdfModel {
@@ -79,6 +62,9 @@ function parseSlidesJson(value: unknown): { slides: Slide[]; model?: PdfModel } 
     if (slide.photo_position !== undefined && !isPhotoPosition(slide.photo_position)) {
       throw new Error(`A posição da foto no slide ${index + 1} não é válida.`);
     }
+    if (slide.background !== undefined && !isSlideBackground(slide.background)) {
+      throw new Error(`O background do slide ${index + 1} não é válido.`);
+    }
     if (
       (slide.tag !== undefined && typeof slide.tag !== 'string') ||
       (slide.content !== undefined && typeof slide.content !== 'string') ||
@@ -102,16 +88,21 @@ function parseSlidesJson(value: unknown): { slides: Slide[]; model?: PdfModel } 
         if (
           !isRecord(card) ||
           typeof card.title !== 'string' ||
-          (card.content !== undefined && typeof card.content !== 'string')
+          (card.content !== undefined && typeof card.content !== 'string') ||
+          (card.theme !== undefined &&
+            card.theme !== 'dark' &&
+            card.theme !== 'light' &&
+            card.theme !== 'gold')
         ) {
           throw new Error(`O card ${cardIndex + 1} do slide ${index + 1} tem formato inválido.`);
         }
-        return { title: card.title, content: card.content };
+        return { title: card.title, content: card.content, theme: card.theme };
       });
     }
 
     return {
       theme: slide.theme === 'centered' ? 'dark' : slide.theme,
+      background: slide.background,
       photo_position: slide.photo_position,
       photo_id: slide.photo_id,
       photo_flip: slide.photo_flip,
@@ -141,7 +132,6 @@ function App() {
   const [showPreview, setShowPreview] = useState(true);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [photoFiles, setPhotoFiles] = useState<Array<File | null>>([null, null, null]);
-  const [backgroundMode, setBackgroundMode] = useState<BackgroundMode>('none');
   const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
   const [previewPages, setPreviewPages] = useState<string[]>([]);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
@@ -269,41 +259,20 @@ function App() {
     }
   };
 
-  const handleBackgroundModeChange = async (mode: BackgroundMode) => {
-    setBackgroundMode(mode);
-    if (mode === 'none' || mode === 'custom') {
-      setBackgroundFile(null);
-      if (mode === 'none') {
-        const input = document.getElementById('background-upload');
-        if (input instanceof HTMLInputElement) input.value = '';
-      } else {
-        document.getElementById('background-upload')?.click();
-      }
-      return;
-    }
-
-    setBackgroundFile(null);
-    try {
-      const textureOption = backgroundTextureOptions[mode];
-      const response = await fetch(textureOption.url);
-      if (!response.ok) {
-        throw new Error(`Não foi possível carregar a textura (${response.status}).`);
-      }
-      const texture = await response.blob();
-      setBackgroundFile(new File([texture], textureOption.filename, { type: texture.type }));
-    } catch (error) {
-      console.error('Error loading background texture:', error);
-      setBackgroundMode('none');
-      alert('Não foi possível carregar a textura de background.');
-    }
-  };
-
   const handleBackgroundUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setBackgroundFile(file);
-      setBackgroundMode('custom');
     }
+  };
+
+  const removeBackground = () => {
+    setBackgroundFile(null);
+    setSlides((current) => current.map((slide) => (
+      slide.background === 'custom' ? { ...slide, background: 'none' } : slide
+    )));
+    const input = document.getElementById('background-upload');
+    if (input instanceof HTMLInputElement) input.value = '';
   };
 
   const removePhoto = (index: number) => {
@@ -386,46 +355,20 @@ function App() {
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="background-mode">Background (aplicado em todos os slides):</label>
-                <select
-                  id="background-mode"
-                  value={backgroundMode}
-                  onChange={(event) => {
-                    void handleBackgroundModeChange(event.target.value as BackgroundMode);
-                  }}
-                >
-                  <option value="none">Sem background</option>
-                  <option value="gold-arcs">Arcos dourados</option>
-                  <option value="blue-glow">Brilho azul</option>
-                  <option value="edge-specks">Partículas nas bordas</option>
-                  <option value="custom">Enviar imagem...</option>
-                </select>
+                <label htmlFor="background-upload">Imagem de background personalizada (opcional):</label>
                 <input
                   id="background-upload"
                   type="file"
                   accept="image/*"
                   onChange={handleBackgroundUpload}
-                  style={{ display: 'none' }}
                 />
                 {backgroundFile && (
                   <div className="background-upload-status">
                     <span className="photo-status">{backgroundFile.name}</span>
                     <button
-                      className="btn btn-secondary btn-sm"
-                      type="button"
-                      onClick={() => document.getElementById('background-upload')?.click()}
-                    >
-                      Trocar imagem
-                    </button>
-                    <button
                       className="btn btn-danger btn-sm"
                       type="button"
-                      onClick={() => {
-                        setBackgroundFile(null);
-                        setBackgroundMode('none');
-                        const input = document.getElementById('background-upload');
-                        if (input instanceof HTMLInputElement) input.value = '';
-                      }}
+                      onClick={removeBackground}
                     >
                       Remover background
                     </button>
@@ -475,6 +418,7 @@ function App() {
                     slide={slide}
                     index={index}
                     photoFiles={photoFiles}
+                    hasCustomBackground={Boolean(backgroundFile)}
                     onUpdate={(s) => updateSlide(index, s)}
                     onRemove={() => removeSlide(index)}
                     canRemove={slides.length > 1}

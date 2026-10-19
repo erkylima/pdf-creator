@@ -67,7 +67,16 @@ export class PdfController {
     const background = backgroundFile
       ? `data:${backgroundFile.mimetype};base64,${backgroundFile.buffer.toString('base64')}`
       : null;
+    const backgrounds = Object.fromEntries(
+      (['gold-arcs', 'blue-glow', 'edge-specks'] as const).map((name) => {
+        const file = uploadedFiles?.[`background-${name}`]?.[0];
+        return [
+          name,
+          file ? `data:${file.mimetype};base64,${file.buffer.toString('base64')}` : null,
+        ];
+      }),
+    );
 
-    return { ...config, photos, photo: photos[0], background };
+    return { ...config, photos, photo: photos[0], background, backgrounds };
   }
 }

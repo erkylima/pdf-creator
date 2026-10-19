@@ -5,6 +5,7 @@ interface SlideEditorProps {
   slide: Slide;
   index: number;
   photoFiles: Array<File | null>;
+  hasCustomBackground: boolean;
   onUpdate: (slide: Slide) => void;
   onRemove: () => void;
   canRemove: boolean;
@@ -14,6 +15,7 @@ export default function SlideEditor({
   slide,
   index,
   photoFiles,
+  hasCustomBackground,
   onUpdate,
   onRemove,
   canRemove,
@@ -45,7 +47,22 @@ export default function SlideEditor({
             <option value="gold">Gold</option>
           </select>
         </div>
-
+        <div className="form-group">
+          <label htmlFor={`slide-${index}-background`}>Background deste slide:</label>
+          <select
+            id={`slide-${index}-background`}
+            value={slide.background || 'none'}
+            onChange={(e) => handleChange('background', e.target.value as Slide['background'])}
+          >
+            <option value="none">Nenhum (usar tema)</option>
+            <option value="gold-arcs">Arcos dourados</option>
+            <option value="blue-glow">Brilho azul</option>
+            <option value="edge-specks">Partículas nas bordas</option>
+            <option value="custom" disabled={!hasCustomBackground}>
+              Imagem personalizada{hasCustomBackground ? '' : ' (carregue na configuração)'}
+            </option>
+          </select>
+        </div>
         <div className="form-group">
           <label>Posição Foto:</label>
           <select
@@ -77,11 +94,11 @@ export default function SlideEditor({
                 <option key={photoIndex} value={photoIndex + 1}>
                   Foto {photoIndex + 1}: {photo.name}
                 </option>
-              ))}
+              )              )}
             </select>
           </div>
           <div className="form-group">
-            <label>Escala (1-20):</label>
+            <label>Escala da foto (1-20, 1 = normal):</label>
             <input
               type="number"
               min="1"
@@ -178,6 +195,22 @@ export default function SlideEditor({
                   }}
                   placeholder="Ex: acesso vitalício"
                 />
+              </div>
+              <div className="form-group">
+                <label htmlFor={`slide-${index}-card-${cardIndex}-theme`}>Tema do card:</label>
+                <select
+                  id={`slide-${index}-card-${cardIndex}-theme`}
+                  value={card.theme || slide.theme || 'dark'}
+                  onChange={(e) => {
+                    const cards = [...(slide.cards || [])];
+                    cards[cardIndex] = { ...card, theme: e.target.value as Theme };
+                    onUpdate({ ...slide, cards });
+                  }}
+                >
+                  <option value="dark">Dark</option>
+                  <option value="light">Light</option>
+                  <option value="gold">Gold</option>
+                </select>
               </div>
               <button
                 className="btn btn-danger btn-sm"
