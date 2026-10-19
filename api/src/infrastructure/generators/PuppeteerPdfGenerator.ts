@@ -57,6 +57,9 @@ export class PuppeteerPdfGenerator implements PdfGeneratorPort {
     const logoDarkBase64 = this.getBase64Image('logo-dark.png');
     const logoLightBase64 = this.getBase64Image('logo-light.png');
     const uploadedPhotos = config.photos || [config.photo || null];
+    const backgroundHtml = config.background
+      ? `<div class="slide-background" aria-hidden="true"><img src="${this.escapeHtml(config.background)}" alt="" /></div>`
+      : '';
 
     let slidesHtml = '';
     const totalSlides = content.slides.length;
@@ -131,6 +134,7 @@ export class PuppeteerPdfGenerator implements PdfGeneratorPort {
 
       slidesHtml += `
       <div class="slide ${layoutClasses}${slide.cards_enabled ? ' has-content-cards' : ''}${slide.photo_position === 'center' ? ' has-centered-photo' : ''}">
+          ${backgroundHtml}
           ${photoHtml}
           ${contentMarkup}
 

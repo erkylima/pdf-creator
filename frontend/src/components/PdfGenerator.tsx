@@ -3,8 +3,12 @@ import { PdfConfig } from '../types';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 export class PdfGenerator {
-  static async generate(config: PdfConfig, photoFiles: Array<File | null>): Promise<void> {
-    const blob = await this.request(config, photoFiles);
+  static async generate(
+    config: PdfConfig,
+    photoFiles: Array<File | null>,
+    backgroundFile: File | null = null,
+  ): Promise<void> {
+    const blob = await this.request(config, photoFiles, backgroundFile);
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -19,8 +23,9 @@ export class PdfGenerator {
     config: PdfConfig,
     photoFiles: Array<File | null>,
     signal?: AbortSignal,
+    backgroundFile: File | null = null,
   ): Promise<string[]> {
-    const formData = this.createFormData(config, photoFiles);
+    const formData = this.createFormData(config, photoFiles, backgroundFile);
     const response = await fetch(`${API_URL}/api/pdf/preview`, {
       method: 'POST',
       body: formData,
@@ -48,11 +53,12 @@ export class PdfGenerator {
   private static async request(
     config: PdfConfig,
     photoFiles: Array<File | null>,
+    backgroundFile: File | null,
     signal?: AbortSignal,
   ): Promise<Blob> {
     const response = await fetch(`${API_URL}/api/pdf/generate`, {
       method: 'POST',
-      body: this.createFormData(config, photoFiles),
+      body: this.createFormData(config, photoFiles, backgroundFile),
       signal,
     });
 
@@ -63,7 +69,11 @@ export class PdfGenerator {
     return response.blob();
   }
 
-  private static createFormData(config: PdfConfig, photoFiles: Array<File | null>): FormData {
+  private static createFormData(
+    config: PdfConfig,
+    photoFiles: Array<File | null>,
+    backgroundFile: File | null,
+  ): FormData {
     const formData = new FormData();
     formData.append('config', JSON.stringify({
       model: config.model,
@@ -74,6 +84,9 @@ export class PdfGenerator {
         formData.append(`photo${index + 1}`, photo);
       }
     });
+    if (backgroundFile) {
+      formData.append('background', backgroundFile);
+    }
     return formData;
   }
 }

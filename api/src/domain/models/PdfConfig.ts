@@ -23,4 +23,5 @@ export interface PdfConfig {
   content: PdfContent;
   photos?: Array<string | null>;
   photo?: string | null;
+  background?: string | null;
 }

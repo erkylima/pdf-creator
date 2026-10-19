@@ -367,6 +367,18 @@ body {
   overflow-wrap: anywhere;
 }
 
+.background-upload-status {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.background-upload-status .photo-status {
+  margin-left: 0;
+}
+
 @media (max-width: 1200px) {
   .editor-container {
     grid-template-columns: 1fr;

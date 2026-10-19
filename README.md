@@ -89,11 +89,14 @@ O frontend está configurado como micro-frontend usando Vite:
 1. Acesse http://localhost:3000
 2. Selecione o modelo (Impacto ou Documental)
 3. Edite os slides com o editor visual e escolha um dos três temas (dark, light ou gold). Em cada slide, escolha uma das até três fotos carregadas e habilite o card de conteúdo independentemente do tema.
-4. Acompanhe o preview, atualizado automaticamente com a mesma renderização do PDF
-5. Clique em "Gerar PDF"
-6. O PDF será baixado automaticamente
+4. Opcionalmente, selecione um overlay transparente incluído (arcos dourados, brilho azul ou partículas nas bordas) ou envie uma imagem de background (aplicada a todos os slides). Os overlays mantêm o tema visível por baixo e o conteúdo à frente para preservar a leitura.
+5. Acompanhe o preview, atualizado automaticamente com a mesma renderização do PDF
+6. Clique em "Gerar PDF"
+7. O PDF será baixado automaticamente
 
-O JSON exportado contém `model` e `slides` na raiz. O carregador também aceita arquivos antigos no formato `{ "slides": [...] }` e configurações com os slides em `content.slides`. As fotos são enviadas separadamente; ao importar um JSON que usa `photo_id`, carregue novamente as imagens nos slots correspondentes.
+Os overlays incluídos são PNGs transparentes de **1080x1350 px**, mesma resolução dos slides. Backgrounds enviados pelo usuário são ajustados para cobrir a página.
+
+O JSON exportado contém `model` e `slides` na raiz. O carregador também aceita arquivos antigos no formato `{ "slides": [...] }` e configurações com os slides em `content.slides`. Fotos e backgrounds são enviados separadamente; ao importar um JSON que usa `photo_id`, carregue novamente as imagens nos slots correspondentes.
 
 ## Scripts
 
