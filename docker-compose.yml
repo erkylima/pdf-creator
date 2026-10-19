@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: pdf-creator-api
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./shared:/app/shared:ro
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    networks:
+      - pdf-creator-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pdf-creator-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - API_URL=http://api:3001
+    depends_on:
+      - api
+    networks:
+      - pdf-creator-network
+
+networks:
+  pdf-creator-network:
+    driver: bridge

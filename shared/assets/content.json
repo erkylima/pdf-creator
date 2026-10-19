@@ -1,0 +1,57 @@
+{
+  "slides": [
+    {
+      "theme": "dark",
+      "photo_position": "bottom-right",
+      "scale": 15,
+      "tag": "O CUSTO INVISÍVEL",
+      "title": "O buraco de US$ 2,41 Trilhões.",
+      "content": "Sabe qual é o preço daquele \"código provisório\" que a sua equipe subiu para produção há 5 anos e nunca arrumou?"
+    },
+    {
+      "theme": "light",
+      "tag": "DADOS DE MERCADO",
+      "title": "A conta chegou.",
+      "content": "US$ 2,41 trilhões por ano. Esse é o custo do débito técnico e da má qualidade de software apenas nos Estados Unidos (segundo o CISQ)."
+    },
+    {
+      "theme": "gold",
+      "tag": "A PROMESSA",
+      "title": "A miragem da IA.",
+      "content": "Aí chegou a IA com a promessa mágica de que os LLMs iriam varrer o código legado, refatorar tudo em segundos e zerar a dívida."
+    },
+    {
+      "theme": "dark",
+      "tag": "ALERTA DO GARTNER",
+      "title": "\"A IA pode multiplicar a dívida.\"",
+      "content": "O Gartner jogou um balde de água fria: o uso de ferramentas de IA para desenvolvimento, se feito sem governança, não vai pagar o débito técnico. Vai piorá-lo."
+    },
+    {
+      "theme": "light",
+      "tag": "O PONTO CEGO",
+      "title": "A máquina não tem contexto.",
+      "content": "Ela cospe código na velocidade da luz, mas não sabe qual módulo obsoleto é o que realmente resolve a dor do seu usuário."
+    },
+    {
+      "theme": "gold",
+      "tag": "GOVERNANÇA",
+      "title": "A Linha de Frente",
+      "content": "É o humano — o Forward Deployed Engineer — quem define a direção. É você quem entende a dor real e aponta para a IA o que deve ser reescrito primeiro."
+    },
+    {
+      "theme": "dark",
+      "tag": "VISÃO DE FUTURO",
+      "title": "O Débito Humano",
+      "content": "Se o débito técnico em software custa trilhões, já imaginou o tamanho do débito que acumulamos com a natureza e com a nossa sociedade?"
+    },
+    {
+      "theme": "light",
+      "photo_position": "bottom-left",
+      "flip": true,
+      "scale": 5.5,
+      "tag": "AÇÃO",
+      "title": "A tecnologia está na mesa.",
+      "content": "O futuro nos convida a usar essa eficiência não só no código, mas para zerar desigualdades no mundo físico.\n\nEstamos usando-a para o que realmente importa?"
+    }
+  ]
+}
