@@ -1,0 +1,125 @@
+{
+  "model": "impacto",
+  "slides": [
+    {
+      "theme": "dark",
+      "background": "gold-arcs",
+      "photo_position": "bottom-right",
+      "photo_id": 1,
+      "scale": 1,
+      "tag": "OPINIÃO & ESTRATÉGIA",
+      "title": "Se você não tem um produto, você NÃO precisa de um FDE",
+      "content": "Por que a nova 'palavra da moda' no mercado de tecnologia esconde um erro de conceito estrutural.",
+      "cards_enabled": false,
+      "hidden_logo": false
+    },
+    {
+      "theme": "dark",
+      "background": "none",
+      "tag": "O CONTEXTO",
+      "title": "A 'Gourmetização' do Cargo",
+      "content": "Com o boom da IA, o gargalo das empresas deixou de ser a teoria e passou a ser o caos do mundo real.",
+      "cards_enabled": true,
+      "cards": [
+        {
+          "title": "A Febre do Mercado",
+          "content": "Rebatizar atuações de escopo fechado como 'FDE' sem alterar o modelo operacional.",
+          "theme": "gold"
+        },
+        {
+          "title": "A Realidade de Campo",
+          "content": "Sem um produto para evoluir, não há FDE. Há apenas uma boa consultoria sem acúmulo de ativo.",
+          "theme": "light"
+        }
+      ],
+      "hidden_logo": false
+    },
+    {
+      "theme": "light",
+      "background": "blue-glow",
+      "tag": "ORIGEM & CONCEITO",
+      "title": "Das 'Estradas de Terra' às 'Rodovias Pavimentadas'",
+      "content": "O modelo criado pela Palantir em 2005 estabeleceu a regra de ouro do FDE:",
+      "cards_enabled": true,
+      "cards": [
+        {
+          "title": "1. Estradas de Terra (Campo)",
+          "content": "Construção de integrações e soluções táticas para destravar o valor no cliente imediatamente.",
+          "theme": "dark"
+        },
+        {
+          "title": "2. Rodovias Pavimentadas (Produto)",
+          "content": "Absorção dos padrões aprendidos no campo para virar funcionalidade nativa na plataforma matriz.",
+          "theme": "gold"
+        }
+      ],
+      "hidden_logo": false
+    },
+    {
+      "theme": "dark",
+      "background": "edge-specks",
+      "tag": "MATRIZ DE IDENTIDADE",
+      "title": "FDE vs. Papéis Tradicionais",
+      "content": "A diferença real está na imersão e no ciclo de feedback:",
+      "cards_enabled": true,
+      "cards": [
+        {
+          "title": "FDE Autêntico",
+          "content": "Imersão máxima + Feedback loop direto para o Roadmap do produto core.",
+          "theme": "gold"
+        },
+        {
+          "title": "Engenheiro de Produto",
+          "content": "Atuação interna no laboratório, focado em estabilidade e escala.",
+          "theme": "dark"
+        },
+        {
+          "title": "Escopo Fechado / SOW",
+          "content": "Entrega pontual onde o valor do código morre no término do contrato.",
+          "theme": "light"
+        }
+      ],
+      "hidden_logo": false
+    },
+    {
+      "theme": "gold",
+      "background": "none",
+      "tag": "MODELO FINANCEIRO",
+      "title": "Trading Margin for Moat",
+      "content": "Como a Andreessen Horowitz (a16z) explica a economia por trás do FDE:",
+      "cards_enabled": true,
+      "cards": [
+        {
+          "title": "Trocar Margem no Curto Prazo...",
+          "content": "Assumindo custos de engenharia sênior operando dentro do cliente...",
+          "theme": "dark"
+        },
+        {
+          "title": "...Por um 'Moat' Inexpugnável",
+          "content": "...Para construir uma plataforma alimentada pela dor real do mercado.",
+          "theme": "dark"
+        }
+      ],
+      "hidden_logo": false
+    },
+    {
+      "theme": "dark",
+      "background": "gold-arcs",
+      "photo_position": "bottom-right",
+      "photo_id": 1,
+      "scale": 1,
+      "tag": "CONCLUSÃO",
+      "title": "Sem produto central, não há FDE",
+      "content": "Antes de mudar a nomenclatura no LinkedIn, certifique-se de que a sua organização tem a infraestrutura para absorver os aprendizados do campo.\n\nArtigo completo disponível no Medium!",
+      "cards_enabled": true,
+      "cards": [
+        {
+          "title": "Leia a Análise Completa",
+          "content": "Link disponível no meu perfil e nos comentários.",
+          "theme": "gold"
+        }
+      ],
+      "hidden_logo": false
+    }
+  ]
+}
